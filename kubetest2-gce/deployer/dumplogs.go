@@ -124,7 +124,8 @@ func (d *deployer) kubectlDump() error {
 	cmd := exec.Command(args[0], args[1:]...)
 	cmd.SetEnv(env...)
 	cmd.SetStderr(os.Stderr)
-	cmd.SetStdout(outfile)
+	// cmd.SetStdout(outfile)
+	cmd.SetStdout(os.Stdout)
 	err = cmd.Run()
 	if err != nil {
 		return fmt.Errorf("couldn't use kubectl to dump cluster info: %s", err)
