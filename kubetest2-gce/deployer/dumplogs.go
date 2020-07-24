@@ -113,10 +113,11 @@ func (d *deployer) kubectlDump() error {
 	}
 	defer outfile.Close()
 
+	klog.V(2).Info("IN TEST MODIFICATION")
 	args := []string{
-		d.kubectlPath,
-		"cluster-info",
-		"dump",
+		"bash",
+		"-c",
+		"set -x; echo $KUBECONFIG; cat $KUBECONFIG; kubectl cluster-info dump",
 	}
 	klog.V(2).Infof("About to run: %s", args)
 
