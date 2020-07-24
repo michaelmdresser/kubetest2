@@ -117,7 +117,7 @@ func (d *deployer) kubectlDump() error {
 	args := []string{
 		"bash",
 		"-c",
-		"set -x; echo $KUBECONFIG; cat $KUBECONFIG; kubectl cluster-info dump",
+		"set -x; echo $KUBECONFIG; cat $KUBECONFIG; kubectl get node",
 	}
 	klog.V(2).Infof("About to run: %s", args)
 
