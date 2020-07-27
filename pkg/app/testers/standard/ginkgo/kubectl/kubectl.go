@@ -25,23 +25,23 @@ import (
 
 const (
 	// kubectl = "./kubernetes/client/bin/kubectl"
-	kubectl = "./cluster/kubectl.sh --kubeconfig=${ARTIFACTS}/kubetest2-kubeconfig"
+	kubectl = "./cluster/kubectl.sh"
 )
 
 // APIServerURL obtains the URL of the k8s master from kubectl
 func APIServerURL() (string, error) {
-	kubecontext, err := execAndResult(kubectl, "config", "view", "-o", "jsonpath=\"{.current-context}\"")
+	kubecontext, err := execAndResult(kubectl, "--kubeconfig=${ARTIFACTS}/kubetest2-kubeconfig", "config", "view", "-o", "jsonpath=\"{.current-context}\"")
 	if err != nil {
 		return "", fmt.Errorf("Could not get kube context: %v", err)
 	}
 
-	clustername, err := execAndResult(kubectl, "config", "view", "-o",
+	clustername, err := execAndResult(kubectl, "--kubeconfig=${ARTIFACTS}/kubetest2-kubeconfig", "config", "view", "-o",
 		fmt.Sprintf("jsonpath=\"{.contexts[?(@.name == %s)].context.cluster}\"", kubecontext))
 	if err != nil {
 		return "", fmt.Errorf("Could not get cluster name: %v", err)
 	}
 
-	apiServerURL, err := execAndResult(kubectl, "config", "view", "-o",
+	apiServerURL, err := execAndResult(kubectl, "--kubeconfig=${ARTIFACTS}/kubetest2-kubeconfig", "config", "view", "-o",
 		fmt.Sprintf("jsonpath={.clusters[?(@.name == %s)].cluster.server}", clustername))
 	if err != nil {
 		return "", err
