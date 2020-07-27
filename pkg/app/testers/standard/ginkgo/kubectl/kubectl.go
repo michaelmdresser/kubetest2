@@ -42,7 +42,7 @@ func APIServerURL() (string, error) {
 
 	fmt.Println("COMMAND")
 	command := []string{kubectl, kubeconfig, "config", "view", "-o", "jsonpath=\"{.current-context}\""}
-	fmt.Pritnln("END, RUNNING")
+	fmt.Println("END, RUNNING")
 
 	// kubecontext, err := execAndResult(kubectl, kubeconfig, "config", "view", "-o", "jsonpath=\"{.current-context}\"")
 	kubecontext, err := execAndResult(command[0], command[1:]...)
