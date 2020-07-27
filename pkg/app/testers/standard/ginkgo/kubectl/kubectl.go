@@ -25,7 +25,7 @@ import (
 
 const (
 	// kubectl = "./kubernetes/client/bin/kubectl"
-	kubectl = "./cluster/kubectl.sh"
+	kubectl = "./cluster/kubectl.sh --kubeconfig=${ARTIFACTS}/kubetest2-kubeconfig"
 )
 
 // APIServerURL obtains the URL of the k8s master from kubectl
