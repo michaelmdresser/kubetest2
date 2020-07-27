@@ -33,7 +33,7 @@ const (
 func APIServerURL() (string, error) {
 	fmt.Println("STARTING API SERVER URL")
 	lsresult, err := execAndResult("bash", "-c",
-		"set -o xtrace; ls ${ARTIFACTS}; cat ${ARTIFACTS}/kubetest2-kubeconfig")
+		"set -o xtrace; ls ${ARTIFACTS}; echo \"----\"; cat ${ARTIFACTS}/kubetest2-kubeconfig; echo \"-----\"; kubectl --kubeconfig=${ARTIFACTS}/kubetest2-kubeconfig view -o jsonpath=\"{.current-context}\"")
 	fmt.Println("RESULT")
 	fmt.Println(lsresult)
 	fmt.Println("ERROR")
@@ -42,6 +42,7 @@ func APIServerURL() (string, error) {
 
 	fmt.Println("COMMAND")
 	command := []string{kubectl, kubeconfig, "config", "view", "-o", "jsonpath=\"{.current-context}\""}
+	fmt.Println(command)
 	fmt.Println("END, RUNNING")
 
 	// kubecontext, err := execAndResult(kubectl, kubeconfig, "config", "view", "-o", "jsonpath=\"{.current-context}\"")
