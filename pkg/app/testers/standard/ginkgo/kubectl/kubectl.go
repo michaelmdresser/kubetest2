@@ -19,6 +19,7 @@ package kubectl
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"sigs.k8s.io/kubetest2/pkg/exec"
 )
@@ -71,7 +72,8 @@ func APIServerURL() (string, error) {
 
 // execAndResult runs command with args and returns the entire output (or error)
 func execAndResult(command string, args ...string) (string, error) {
-	cmd := exec.Command(command, args...)
+	// cmd := exec.Command(command, args...)
+	cmd := exec.Command("bash", "-c", fmt.Sprintf("%s %s", command, strings.Join(args, " ")))
 	cmd.SetStderr(os.Stderr)
 	bytes, err := exec.Output(cmd)
 	return string(bytes), err
