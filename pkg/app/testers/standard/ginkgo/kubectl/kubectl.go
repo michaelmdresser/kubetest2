@@ -57,7 +57,7 @@ func APIServerURL() (string, error) {
 	fmt.Println("END")
 
 	clustername, err := execAndResult(kubectl, kubeconfig, "config", "view", "-o",
-		fmt.Sprintf("jsonpath=\"{.contexts[?(@.name == %s)].context.cluster}\"", kubecontext))
+		fmt.Sprintf("jsonpath=\"{.contexts[?(@.name == \"%s\")].context.cluster}\"", kubecontext))
 	if err != nil {
 		return "", fmt.Errorf("Could not get cluster name: %v", err)
 	}
