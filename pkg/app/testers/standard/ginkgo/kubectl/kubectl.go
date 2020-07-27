@@ -40,10 +40,19 @@ func APIServerURL() (string, error) {
 	fmt.Println(err)
 	fmt.Println("END")
 
-	kubecontext, err := execAndResult(kubectl, kubeconfig, "config", "view", "-o", "jsonpath=\"{.current-context}\"")
+	fmt.Println("COMMAND")
+	command := []string{kubectl, kubeconfig, "config", "view", "-o", "jsonpath=\"{.current-context}\""}
+	fmt.Pritnln("END, RUNNING")
+
+	// kubecontext, err := execAndResult(kubectl, kubeconfig, "config", "view", "-o", "jsonpath=\"{.current-context}\"")
+	kubecontext, err := execAndResult(command[0], command[1:]...)
 	if err != nil {
 		return "", fmt.Errorf("Could not get kube context: %v", err)
 	}
+
+	fmt.Println("KUBECONTEXT")
+	fmt.Println(kubecontext)
+	fmt.Println("END")
 
 	clustername, err := execAndResult(kubectl, kubeconfig, "config", "view", "-o",
 		fmt.Sprintf("jsonpath=\"{.contexts[?(@.name == %s)].context.cluster}\"", kubecontext))
