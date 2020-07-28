@@ -56,8 +56,12 @@ func APIServerURL() (string, error) {
 	fmt.Println(kubecontext)
 	fmt.Println("END")
 
-	clustername, err := execAndResult(kubectl, kubeconfig, "config", "view", "-o",
-		fmt.Sprintf("jsonpath=\"{.contexts[?(@.name == \"%s\")].context.cluster}\"", kubecontext))
+	fmt.Println("CLUSTERNAME COMMAND")
+	clusternameCommand := []string{kubectl, kubeconfig, "config", "view", "-o",
+		fmt.Sprintf("jsonpath=\"{.contexts[?(@.name == \"%s\")].context.cluster}\"", kubecontext)}
+	fmt.Println(clusternameCommand)
+	fmt.Println("END, RUNNING")
+	clustername, err := execAndResult(clusternameCommand[0], clusternameCommand[1:]...)
 	if err != nil {
 		return "", fmt.Errorf("Could not get cluster name: %v", err)
 	}
