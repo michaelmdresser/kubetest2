@@ -34,7 +34,7 @@ const (
 func APIServerURL() (string, error) {
 	fmt.Println("STARTING API SERVER URL")
 	lsresult, err := execAndResult("bash", "-c",
-		"set -o xtrace; ls ${ARTIFACTS}; echo \"----\"; cat ${ARTIFACTS}/kubetest2-kubeconfig; echo \"-----\"; kubectl --kubeconfig=${ARTIFACTS}/kubetest2-kubeconfig view -o jsonpath=\"{.current-context}\"")
+		"set -o xtrace; ls ${ARTIFACTS}; echo \"----\"; cat ${ARTIFACTS}/kubetest2-kubeconfig; echo \"-----\"; kubectl --kubeconfig=${ARTIFACTS}/kubetest2-kubeconfig config view -o jsonpath=\"{.current-context}\"")
 	fmt.Println("RESULT")
 	fmt.Println(lsresult)
 	fmt.Println("ERROR")
@@ -58,7 +58,7 @@ func APIServerURL() (string, error) {
 
 	fmt.Println("CLUSTERNAME COMMAND")
 	clusternameCommand := []string{kubectl, kubeconfig, "config", "view", "-o",
-		fmt.Sprintf("jsonpath=\"{.contexts[?(@.name == \"%s\")].context.cluster}\"", kubecontext)}
+		fmt.Sprintf("jsonpath=\"{.contexts[?(@.name == \\\"%s\\\")].context.cluster}\"", kubecontext)}
 	fmt.Println(clusternameCommand)
 	fmt.Println("END, RUNNING")
 	clustername, err := execAndResult(clusternameCommand[0], clusternameCommand[1:]...)
