@@ -35,8 +35,9 @@ const (
 )
 
 var (
-	kubeRoot    string
-	e2eTestPath = filepath.Join("kubernetes", "test", "bin", "e2e.test")
+	kubeRoot string
+	// e2eTestPath = filepath.Join("kubernetes", "test", "bin", "e2e.test")
+	e2eTestPath = filepath.Join("/", "usr", "local", "google", "home", "dresser", "devel", "kubernetes", "_output", "local", "go", "bin", "e2e.test")
 )
 
 const usage = `--flake-attempts Make up to this many attempts to run each spec.

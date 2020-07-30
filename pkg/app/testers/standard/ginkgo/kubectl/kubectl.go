@@ -26,28 +26,17 @@ import (
 
 const (
 	// kubectl = "./kubernetes/client/bin/kubectl"
-	kubectl    = "/home/prow/go/src/k8s.io/cloud-provider-gcp/cluster/kubectl.sh"
-	kubeconfig = "--kubeconfig=${ARTIFACTS}/kubetest2-kubeconfig"
-	// kubectl    = "${HOME}/devel/cloud-provider-gcp/cluster/kubectl.sh"
-	// kubeconfig = "--kubeconfig=${HOME}/devel/cloud-provider-gcp/_artifacts/kubetest2-kubeconfig"
+	// kubectl    = "/home/prow/go/src/k8s.io/cloud-provider-gcp/cluster/kubectl.sh"
+	// kubeconfig = "--kubeconfig=${ARTIFACTS}/kubetest2-kubeconfig"
+	kubectl    = "${HOME}/devel/cloud-provider-gcp/cluster/kubectl.sh"
+	kubeconfig = "--kubeconfig=${HOME}/devel/cloud-provider-gcp/_artifacts/kubetest2-kubeconfig"
 )
 
 // APIServerURL obtains the URL of the k8s master from kubectl
 func APIServerURL() (string, error) {
 	fmt.Println("STARTING API SERVER URL")
-	lsresult, err := wrapAndRunWithLogging(
-		"set -o xtrace; ls ${ARTIFACTS}; echo \"----\"; cat ${ARTIFACTS}/kubetest2-kubeconfig; echo \"-----\"; kubectl --kubeconfig=${ARTIFACTS}/kubetest2-kubeconfig config view -o jsonpath=\"{.current-context}\"")
-	fmt.Println("RESULT")
-	fmt.Println(lsresult)
-	fmt.Println("ERROR")
-	fmt.Println(err)
-	fmt.Println("END")
 
-	fmt.Println("COMMAND")
 	command := []string{kubectl, kubeconfig, "config", "view", "-o", "jsonpath=\"{.current-context}\""}
-	fmt.Println(command)
-	fmt.Println("END, RUNNING")
-
 	// kubecontext, err := execAndResult(kubectl, kubeconfig, "config", "view", "-o", "jsonpath=\"{.current-context}\"")
 	kubecontext, err := execAndResult(command[0], command[1:]...)
 	if err != nil {
@@ -64,7 +53,7 @@ func APIServerURL() (string, error) {
 	fmt.Println(clusternameCommand)
 	fmt.Println("END, RUNNING")
 	// clustername, err := execAndResult(clusternameCommand[0], clusternameCommand[1:]...)
-	clustername, err := wrapAndRunWithLogging(clusternameCommand[0], clusternameCommand[1:]...)
+	clustername, err := WrapAndRunWithLogging(clusternameCommand[0], clusternameCommand[1:]...)
 	if err != nil {
 		return "", fmt.Errorf("Could not get cluster name: %v", err)
 	}
@@ -72,7 +61,7 @@ func APIServerURL() (string, error) {
 	fmt.Println("APISERVER COMMAND")
 	//apiServerURL, err := execAndResult(kubectl, kubeconfig, "config", "view", "-o",
 	//	fmt.Sprintf("jsonpath={.clusters[?(@.name == %s)].cluster.server}", clustername))
-	apiServerURL, err := wrapAndRunWithLogging(kubectl, kubeconfig, "config", "view", "-o",
+	apiServerURL, err := WrapAndRunWithLogging(kubectl, kubeconfig, "config", "view", "-o",
 		fmt.Sprintf("jsonpath=\"{.clusters[?(@.name == \\\"%s\\\")].cluster.server}\"", clustername))
 	if err != nil {
 		return "", err
@@ -104,7 +93,7 @@ func execAndResult(command string, args ...string) (string, error) {
 	return string(bytes), err
 }
 
-func wrapAndRunWithLogging(command string, args ...string) (string, error) {
+func WrapAndRunWithLogging(command string, args ...string) (string, error) {
 	fmt.Printf("Before wrapping, command is: %#v\n", command)
 	fmt.Printf("Before wrapping, args is: %#v\n", args)
 	wrappedCommand, wrappedArgs := wrapInBashC(command, args...)
@@ -119,7 +108,7 @@ func wrapAndRunWithLogging(command string, args ...string) (string, error) {
 		fmt.Printf("error from run: %s\n", err)
 	}
 	fmt.Println()
-	fmt.Printf("bytes: %#v\n", bytes)
+	// fmt.Printf("bytes: %#v\n", bytes)
 	fmt.Printf("str result: %s\n", bytes)
 	fmt.Println("done")
 	fmt.Println()
