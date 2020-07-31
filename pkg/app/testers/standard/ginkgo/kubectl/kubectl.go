@@ -28,8 +28,9 @@ const (
 	// kubectl = "./kubernetes/client/bin/kubectl"
 	// kubectl    = "/home/prow/go/src/k8s.io/cloud-provider-gcp/cluster/kubectl.sh"
 	// kubeconfig = "--kubeconfig=${ARTIFACTS}/kubetest2-kubeconfig"
-	kubectl    = "${HOME}/devel/cloud-provider-gcp/cluster/kubectl.sh"
-	kubeconfig = "--kubeconfig=${HOME}/devel/cloud-provider-gcp/_artifacts/kubetest2-kubeconfig"
+	kubectl = "${HOME}/devel/cloud-provider-gcp/cluster/kubectl.sh"
+	//kubeconfig = "--kubeconfig=${HOME}/devel/cloud-provider-gcp/_artifacts/kubetest2-kubeconfig"
+	kubeconfig = "--kubeconfig=${HOME}/_artifacts/kubetest2-kubeconfig"
 )
 
 // APIServerURL obtains the URL of the k8s master from kubectl
